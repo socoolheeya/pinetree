@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">    
+        <property name="locations" value="classpath:/properties/globals.properties"/>    
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+    
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+    
+    <mvc:annotation-driven>
+		<mvc:argument-resolvers> 
+			<bean class="co.io.pinetree.util.resolver.CustomMapArgumentResolver" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+
+	<context:component-scan base-package="co.io.pinetree">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+	</context:component-scan>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/"/>
+			<mvc:mapping path="/main.do"/>
+			<mvc:mapping path="/user/*.do"/>
+			<mvc:mapping path="/request/*.do"/>
+			<mvc:mapping path="/system/*.do"/>
+			<mvc:exclude-mapping path="/login.json"/>
+			<mvc:exclude-mapping path="/logout.do"/>
+			<bean class="co.io.pinetree.util.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+
+	<!-- json설정 -->
+	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0"/>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    	<property name="order" value="1" />
+    	<property name="contentNegotiationManager">
+    		<bean class="org.springframework.web.accept.ContentNegotiationManager">
+    			<constructor-arg>
+    				<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+    					<constructor-arg>
+    						<map>
+    							<entry key="xml" value="application/xml" />
+    							<entry key="json" value="application/json" />
+    						</map>
+    					</constructor-arg>
+    				</bean>
+    			</constructor-arg>
+    		</bean>
+    	</property>
+    	<property name="defaultViews">
+    		<list>
+    			<!-- JSON view -->
+    			<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+    		</list>
+    	</property>
+    </bean>
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="order" value="0" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean> 
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="1" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>		
+</beans>

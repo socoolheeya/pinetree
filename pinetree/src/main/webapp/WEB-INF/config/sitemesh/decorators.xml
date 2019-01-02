@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/views/layout">
+
+	<!-- 데코레이터 적용을 제외할 패턴을 지정한다.  -->
+	<excludes>
+		<pattern>*/*.json</pattern>
+		<pattern>*/*Json.do</pattern>
+		<pattern>*/*.html</pattern>
+	</excludes>
+	
+	<decorator name="login" page="login_layout.jsp">
+		<pattern>/login.do</pattern> 
+		<pattern>/join.do</pattern> 
+	</decorator>
+	
+	<decorator name="main" page="main_layout.jsp">
+		<pattern>/</pattern> 
+		<pattern>/main.do</pattern> 
+		<pattern>/user/*.do</pattern> 
+	</decorator>
+	
+	<decorator name="header" page="header.jsp"/>
+	<decorator name="search" page="search.jsp"/>
+	<decorator name="footer" page="footer.jsp"/>
+</decorators>
