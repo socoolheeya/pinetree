@@ -101,12 +101,21 @@
 		WHERE USERID = #{userId}
 	</update>
 	
-	<update id="passwordErrorCountInit" parameterType="map">
-		/* user.passwordErrorCountInit */
+	<update id="initPasswordErrorCount" parameterType="map">
+		/* user.initPasswordErrorCount */
 		UPDATE
 			T_USER
 		SET
 			ERRCNT = 0
+		WHERE USERID = #{userId}
+	</update>
+	
+	<update id="insertPasswordErrorCount" parameterType="map">
+		/* user.insertPasswordErrorCount */
+		UPDATE
+			T_USER
+		SET
+			ERRCNT = ${errCnt}
 		WHERE USERID = #{userId}
 	</update>
 </mapper>

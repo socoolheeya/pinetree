@@ -9,3 +9,4 @@
 <script src="/resources/jquery/jquery-3.1.1.min.js"></script>
 <script src="/resources/jquery-ui/jquery-ui.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="/resources/js/common.js"></script>

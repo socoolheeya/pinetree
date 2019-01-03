@@ -17,8 +17,8 @@ public interface UserDao {
 	
 	public int userDelete(Map<String, Object> map) throws Exception;
 	
-	public int passwordErrorCountInit(Map<String, Object> map) throws Exception;
+	public int initPasswordErrorCount(Map<String, Object> map) throws Exception;
 
-	public int passwordErrorCountAdd(Map<String, Object> map) throws Exception;
+	public int insertPasswordErrorCount(Map<String, Object> map) throws Exception;
 	
 }

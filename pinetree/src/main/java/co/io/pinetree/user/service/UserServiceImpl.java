@@ -87,12 +87,12 @@ public class UserServiceImpl implements UserService {
 				session.setAttribute("userId", map.get("userId"));
 				session.setAttribute("name", map.get("name"));
 				
-				passwordErrorCountInit(paramMap);
+				initPasswordErrorCount(paramMap);
 				
 				resultMap.put("success", true);
 			} else {
 				paramMap.put("errCnt", errorCnt++);
-				passwordErrorCountAdd(paramMap);
+				insertPasswordErrorCount(paramMap);
 				
 				resultMap.put("msg", "비밀번호 입력 실패");
 				resultMap.put("success", false);
@@ -105,13 +105,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int passwordErrorCountInit(Map<String, Object> map) throws Exception {
-		return userDao.passwordErrorCountInit(map);
+	public int initPasswordErrorCount(Map<String, Object> map) throws Exception {
+		return userDao.initPasswordErrorCount(map);
 	}
 
 	@Override
-	public int passwordErrorCountAdd(Map<String, Object> map) throws Exception {
-		return userDao.passwordErrorCountAdd(map);
+	public int insertPasswordErrorCount(Map<String, Object> map) throws Exception {
+		return userDao.insertPasswordErrorCount(map);
+	}
+
+	@Override
+	public boolean isValidUser(Map<String, Object> map) throws Exception {
+		Map<String, Object> userView = view(map);
+		if(userView != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

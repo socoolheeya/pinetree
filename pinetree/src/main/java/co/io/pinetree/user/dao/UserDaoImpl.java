@@ -44,13 +44,13 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int passwordErrorCountInit(Map<String, Object> map) throws Exception {
-		return dao.update("user.passwordErrorCountInit", map);
+	public int initPasswordErrorCount(Map<String, Object> map) throws Exception {
+		return dao.update("user.initPasswordErrorCount", map);
 	}
 
 	@Override
-	public int passwordErrorCountAdd(Map<String, Object> map) throws Exception {
-		return dao.update("user.passwordErrorCountAdd", map);
+	public int insertPasswordErrorCount(Map<String, Object> map) throws Exception {
+		return dao.update("user.insertPasswordErrorCount", map);
 	}
 	
 	

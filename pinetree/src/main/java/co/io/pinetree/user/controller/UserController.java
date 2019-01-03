@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -109,7 +110,7 @@ public class UserController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value="userDelete.json", method=RequestMethod.POST)
+	@PostMapping(value="userDelete.json")
 	@ResponseBody
 	public Map<String, Object> userDeleteJson(CommandMap cmMap) throws Exception {
 		log.debug("===================================================================================");
@@ -127,5 +128,17 @@ public class UserController {
 		}
 		
 		return resultMap;
+	}
+	
+	@PostMapping(value="userIdCheck.json")
+	@ResponseBody
+	public void userIdCheck(Model model, CommandMap cmMap) throws Exception {
+		log.debug("===================================================================================");
+		log.debug("[METHDO] : " + Thread.currentThread().getStackTrace()[1].getMethodName().toString() + "()");
+		log.debug("[PARAM] : " + cmMap.getMap());
+		log.debug("===================================================================================");
+		
+		boolean isVaildUser = userService.isValidUser(cmMap.getMap());
+		model.addAttribute("success", isVaildUser);
 	}
 }
